@@ -1,0 +1,81 @@
+require 'spec_helper'
+
+describe package('awscli') do
+  it { should be_installed }
+end
+
+describe package('aws-cfn-bootstrap') do
+  it { should be_installed }
+end
+
+describe package('mozilla-services-aws-release-6-5') do
+  it { should be_installed }
+end
+
+describe package('puppet-3.8.7') do
+  it { should be_installed }
+end
+
+describe package('sops') do
+  it { should be_installed.with_version('2.0.6') }
+end
+
+describe package('yum-plugins-s3-iam') do
+  it { should be_installed }
+end
+
+describe file('/etc/svcops-release') do
+  it { should be_file}
+end
+
+describe file('/root/install_cloudops_puppet.sh') do
+  it { should be_file }
+  it { should be_mode 700 }
+  its(:size) { should eq 568 }
+end
+
+describe file('/root/install_sysdig.sh') do
+  it { should be_file }
+  it { should be_mode 700 }
+  its(:size) { should eq 310 }
+end
+
+describe file('/root/prep_ami.sh') do
+  it { should be_file }
+  it { should be_mode 755 }
+end
+
+describe file('/etc/cloud/cloud.cfg') do
+  it { should be_file }
+  its(:sha256sum) { should eq '8d314924ba14a97c9a4a7398741b07ad44a1724f158ad028cf61dcb8325113a1' }
+end
+
+describe file('/etc/ssh/sshd_config') do
+  its(:content) { should match /UseDNS no/ }
+end
+
+describe file('/etc/sysconfig/firstboot') do
+  it { should be_file} 
+  its(:content) { should match /RUN_FIRSTBOOT=NO/ }
+end
+
+describe file('/etc/yum/pluginconf.d/fastestmirror.conf') do
+  its(:content) { should_not match /enabled=1/ }
+end
+
+describe file('/usr/lib/systemd/system/cloud-final.service') do
+  its(:content) { should match /After.*systemd-journald.service$/ }
+end
+
+describe interface('eth0') do
+  it { should exist }
+end
+
+describe yumrepo('cr') do
+  it { should_not be_enabled }
+end
+
+describe command('/sbin/tuned-adm active') do
+  its(:stdout) { should match /default/ }
+  its(:exit_status) { should eq 0 }
+end
