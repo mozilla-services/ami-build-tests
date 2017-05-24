@@ -23,7 +23,7 @@ describe package('puppet-3.8.7') do
 end
 
 describe package('sops') do
-  it { should be_installed.with_version('2.0.6') }
+  it { should be_installed.with_version('2.0.9') }
 end
 
 describe package('yum-plugins-s3-iam') do
