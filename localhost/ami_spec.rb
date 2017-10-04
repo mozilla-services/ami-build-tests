@@ -18,7 +18,7 @@ describe package('mozilla-services-aws-release-7-1') do
   it { should be_installed }
 end
 
-describe package('puppet-3.8.7') do
+describe package('puppet-agent') do
   it { should be_installed }
 end
 
@@ -59,12 +59,6 @@ end
 describe file('/root/prep_ami.sh') do
   it { should be_file }
   it { should be_mode 755 }
-end
-
-describe file('/usr/bin/dockerpull.sh') do
-  it { should be_file }
-  it { should be_mode 755 }
-  its(:size) { should eq 107 }
 end
 
 describe file('/usr/lib/systemd/system-shutdown/debug.sh') do
